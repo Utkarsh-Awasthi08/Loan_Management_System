@@ -32,10 +32,19 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 });
 
 // Start server
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 LMS Backend running on http://localhost:${PORT}`);
-  });
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 LMS Backend running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Server startup failed:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 export default app;
